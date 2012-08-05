@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<preferences
+        speed="PERCENT_100"
+        scale="PERCENT_100"
+        >
+    <keyboard>
+        <key name="KEY_1" code="49"/>
+        <key name="KEY_2" code="50"/>
+        <key name="KEY_3" code="51"/>
+        <key name="KEY_C" code="52"/>
+
+        <key name="KEY_4" code="81"/>
+        <key name="KEY_5" code="87"/>
+        <key name="KEY_6" code="69"/>
+        <key name="KEY_D" code="82"/>
+
+        <key name="KEY_7" code="65"/>
+        <key name="KEY_8" code="83"/>
+        <key name="KEY_9" code="68"/>
+        <key name="KEY_E" code="70"/>
+
+        <key name="KEY_A" code="90"/>
+        <key name="KEY_0" code="88"/>
+        <key name="KEY_B" code="67"/>
+        <key name="KEY_F" code="86"/>
+    </keyboard>
+</preferences>

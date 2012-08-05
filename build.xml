@@ -1,0 +1,41 @@
+<project name="ChipX" basedir="." default="help">
+
+    <property name="src.dir" value="src"/>
+    <property name="out.dir" value="build/classes"/>
+    <property name="build.dir" value="build"/>
+
+    <!--<taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler" />-->
+
+    <target name="clean">
+        <delete dir="out"/>
+        <delete dir="build"/>
+    </target>
+
+    <target name="compile" depends="clean">
+        <mkdir dir="${out.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${out.dir}" includeantruntime="false"/>
+    </target>
+
+    <target name="build" depends="compile">
+        <mkdir dir="${build.dir}"/>
+        <jar destfile="${build.dir}/ChipX.jar" basedir="${out.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="com.chip8.ChipXApplication"/>
+            </manifest>
+
+            <fileset dir=".">
+                <include name="**/conf/**"/>
+            </fileset>
+        </jar>
+    </target>
+
+    <!--<target name="build-mac" depends="build">-->
+        <!--<jarbundler dir="${build.dir}"-->
+                    <!--name="ChipX"-->
+                    <!--mainclass="com.chip8.ChipXApplication"-->
+                    <!--jar="${build.dir}/ChipX.jar"-->
+                    <!--jvmversion="1.6+"-->
+                <!--/>-->
+    <!--</target>-->
+
+</project>
