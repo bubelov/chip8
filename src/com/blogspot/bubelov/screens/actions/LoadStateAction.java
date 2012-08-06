@@ -2,13 +2,11 @@ package com.blogspot.bubelov.screens.actions;
 
 import com.blogspot.bubelov.core.Cpu;
 import com.blogspot.bubelov.screens.EmulatorController;
+import com.blogspot.bubelov.utils.IOUtils;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
 
 /**
  * Author: Igor Bubelov
@@ -30,11 +28,7 @@ public class LoadStateAction extends AbstractAction {
         }
 
         try {
-            File stateFile = new File("state");
-            InputStream inputStream = new FileInputStream(stateFile);
-            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-            Cpu cpu = (Cpu)objectInputStream.readObject();
-            objectInputStream.close();
+            Cpu cpu = (Cpu) IOUtils.deSerializeObjectFromFile(new File("state"));
             controller.setCpu(cpu);
             controller.start();
         } catch (Exception ex) {

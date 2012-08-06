@@ -1,8 +1,6 @@
 package com.blogspot.bubelov.utils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
@@ -11,6 +9,21 @@ import java.nio.channels.FileChannel;
  * Date: 6/07/12 11:18 PM
  */
 public class IOUtils {
+    public static void serializeObjectToFile(Object object, File file) throws Exception {
+        OutputStream fileOutputStream = new FileOutputStream(file);
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+        objectOutputStream.writeObject(object);
+        objectOutputStream.close();
+    }
+
+    public static Object deSerializeObjectFromFile(File file) throws Exception {
+        InputStream fileInputStream = new FileInputStream(file);
+        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+        Object result = objectInputStream.readObject();
+        objectInputStream.close();
+        return result;
+    }
+
     public static byte[] getBytes(File file) {
         FileInputStream inputStream = null;
         FileChannel channel = null;

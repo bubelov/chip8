@@ -1,6 +1,7 @@
 package com.blogspot.bubelov.screens.actions;
 
 import com.blogspot.bubelov.screens.EmulatorController;
+import com.blogspot.bubelov.utils.IOUtils;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -21,11 +22,7 @@ public class SaveStateAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            File stateFile = new File("state");
-            OutputStream outputStream = new FileOutputStream(stateFile);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-            objectOutputStream.writeObject(controller.getCpu());
-            objectOutputStream.close();
+            IOUtils.serializeObjectToFile(controller.getCpu(), new File("state"));
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
