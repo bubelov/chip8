@@ -17,6 +17,10 @@ public class InputHandler extends KeyAdapter {
         this.keyMapping = keyMapping;
     }
 
+    public void setKeyboard(Keyboard keyboard) {
+        this.keyboard = keyboard;
+    }
+
     @Override
     public void keyPressed(KeyEvent event) {
         if (keyMapping.containsValue(event.getKeyCode())) {

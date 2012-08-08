@@ -21,15 +21,17 @@ import java.awt.event.ActionListener;
 public class MainScreen extends JFrame implements EmulatorController, PreferenceListener {
     private Cpu cpu;
     private Preferences preferences;
+    private InputHandler inputHandler;
     private RenderingCanvas renderingCanvas;
     private Timer cpuCycleTimer;
     private JMenuBar menuBar;
 
     public MainScreen() throws HeadlessException {
         super("ChipX");
-        setCpu(new Cpu());
+        cpu = new Cpu();
         initPreferences();
-        addKeyListener(new InputHandler(cpu.getKeyboard(), preferences.getKeyMapping()));
+        inputHandler = new InputHandler(cpu.getKeyboard(), preferences.getKeyMapping());
+        addKeyListener(inputHandler);
         initCpuCycleTimer();
         initUI();
     }
@@ -57,6 +59,8 @@ public class MainScreen extends JFrame implements EmulatorController, Preference
     @Override
     public void setCpu(Cpu cpu) {
         this.cpu = cpu;
+        renderingCanvas.setDisplay(cpu.getDisplay());
+        inputHandler.setKeyboard(cpu.getKeyboard());
     }
 
     @Override

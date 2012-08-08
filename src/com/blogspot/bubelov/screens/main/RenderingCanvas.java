@@ -18,6 +18,10 @@ public class RenderingCanvas extends Canvas {
         adjustSize(cellSize);
     }
 
+    public void setDisplay(boolean[] display) {
+        this.display = display;
+    }
+
     @Override
     public void paint(Graphics g) {
         graphics = (Graphics2D)g;
