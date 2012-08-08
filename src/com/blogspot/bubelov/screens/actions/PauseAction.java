@@ -7,20 +7,18 @@ import java.awt.event.ActionEvent;
 
 /**
  * Author: Igor Bubelov
- * Date: 7/07/12 11:00 PM
+ * Date: 8/8/12 8:05 PM
  */
-public class ResetAction extends AbstractAction {
+public class PauseAction extends AbstractAction {
     private EmulatorController controller;
 
-    public ResetAction(EmulatorController controller) {
-        super("Reset");
+    public PauseAction(EmulatorController controller) {
+        super("Pause");
         this.controller = controller;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent actionEvent) {
         controller.stop();
-        controller.getCpu().reset();
-        controller.start();
     }
 }

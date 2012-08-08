@@ -30,6 +30,7 @@ public class OpenRomAction extends AbstractAction {
 
         if (fileChooser.showOpenDialog(controller.getMainWindow()) == JFileChooser.APPROVE_OPTION) {
             controller.getCpu().load(new Rom(IOUtils.getBytes(fileChooser.getSelectedFile())));
+            controller.romOpened();
             controller.start();
         }
     }

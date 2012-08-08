@@ -14,7 +14,7 @@ public class ChangeKeyMappingAction extends AbstractPreferencesAction {
     private JFrame owner;
 
     public ChangeKeyMappingAction(JFrame owner, Preferences preferences) {
-        super("Change Key Mapping", preferences);
+        super("Key Mapping...", preferences);
         this.owner = owner;
     }
 

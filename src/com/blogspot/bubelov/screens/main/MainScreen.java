@@ -1,5 +1,6 @@
 package com.blogspot.bubelov.screens.main;
 
+import com.blogspot.bubelov.EmulatorListener;
 import com.blogspot.bubelov.core.*;
 import com.blogspot.bubelov.core.Cpu;
 import com.blogspot.bubelov.core.preferences.PreferenceListener;
@@ -18,13 +19,17 @@ import java.awt.event.ActionListener;
  * Author: Igor Bubelov
  * Date: 7/07/12 11:01 PM
  */
-public class MainScreen extends JFrame implements EmulatorController, PreferenceListener {
+public class MainScreen extends JFrame implements EmulatorController, PreferenceListener, EmulatorListener {
     private Cpu cpu;
     private Preferences preferences;
     private InputHandler inputHandler;
     private RenderingCanvas renderingCanvas;
     private Timer cpuCycleTimer;
     private JMenuBar menuBar;
+
+    private AbstractAction resumeAction;
+    private AbstractAction pauseAction;
+    private AbstractAction resetAction;
 
     public MainScreen() throws HeadlessException {
         super("ChipX");
@@ -71,11 +76,23 @@ public class MainScreen extends JFrame implements EmulatorController, Preference
     @Override
     public void start() {
         cpuCycleTimer.start();
+        resumeAction.setEnabled(false);
+        pauseAction.setEnabled(true);
+
     }
 
     @Override
     public void stop() {
         cpuCycleTimer.stop();
+        resumeAction.setEnabled(true);
+        pauseAction.setEnabled(false);
+    }
+
+    @Override
+    public void romOpened() {
+        resumeAction.setEnabled(false);
+        pauseAction.setEnabled(true);
+        resetAction.setEnabled(true);
     }
 
     @Override
@@ -109,6 +126,7 @@ public class MainScreen extends JFrame implements EmulatorController, Preference
         menuBar = new JMenuBar();
         createFileMenu();
         createRunMenu();
+        createMemoryMenu();
         createConfigMenu();
         createHelpMenu();
         add(menuBar, BorderLayout.NORTH);
@@ -123,14 +141,27 @@ public class MainScreen extends JFrame implements EmulatorController, Preference
 
     private void createRunMenu() {
         JMenu menu = new JMenu("Run");
-        menu.add(new ResetAction(this));
+        resumeAction = new ResumeAction(this);
+        resumeAction.setEnabled(false);
+        menu.add(resumeAction);
+        pauseAction = new PauseAction(this);
+        pauseAction.setEnabled(false);
+        menu.add(pauseAction);
+        resetAction = new ResetAction(this);
+        resetAction.setEnabled(false);
+        menu.add(resetAction);
+        menuBar.add(menu);
+    }
+
+    private void createMemoryMenu() {
+        JMenu menu = new JMenu("Memory");
         menu.add(new SaveStateAction(this));
         menu.add(new LoadStateAction(this));
         menuBar.add(menu);
     }
 
     private void createConfigMenu() {
-        JMenu menu = new JMenu("Config");
+        JMenu menu = new JMenu("Configuration");
         menu.add(createSpeedMenu());
         menu.add(createScaleMenu());
         menu.add(new ChangeKeyMappingAction(this, preferences));
