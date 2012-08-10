@@ -1,13 +1,12 @@
 package com.blogspot.bubelov.screens.main;
 
-import com.blogspot.bubelov.EmulatorListener;
 import com.blogspot.bubelov.core.*;
 import com.blogspot.bubelov.core.Cpu;
 import com.blogspot.bubelov.core.preferences.PreferenceListener;
 import com.blogspot.bubelov.core.preferences.Preferences;
-import com.blogspot.bubelov.screens.EmulatorController;
 import com.blogspot.bubelov.core.preferences.PreferenceStorage;
 import com.blogspot.bubelov.core.input.InputHandler;
+import com.blogspot.bubelov.screens.ActivityController;
 import com.blogspot.bubelov.screens.actions.*;
 
 import javax.swing.*;
@@ -19,7 +18,7 @@ import java.awt.event.ActionListener;
  * Author: Igor Bubelov
  * Date: 7/07/12 11:01 PM
  */
-public class MainScreen extends JFrame implements EmulatorController, PreferenceListener, EmulatorListener {
+public class MainScreen extends JFrame implements ActivityController, PreferenceListener, CpuListener {
     private Cpu cpu;
     private Preferences preferences;
     private InputHandler inputHandler;
@@ -34,11 +33,13 @@ public class MainScreen extends JFrame implements EmulatorController, Preference
     public MainScreen() throws HeadlessException {
         super("ChipX");
         cpu = new Cpu();
+        cpu.setListener(this);
         initPreferences();
         inputHandler = new InputHandler(cpu.getKeyboard(), preferences.getKeyMapping());
         addKeyListener(inputHandler);
         initCpuCycleTimer();
-        initUI();
+        initActions();
+        buildUI();
     }
 
     private void initPreferences() {
@@ -56,12 +57,6 @@ public class MainScreen extends JFrame implements EmulatorController, Preference
         });
     }
 
-    @Override
-    public Cpu getCpu() {
-        return cpu;
-    }
-
-    @Override
     public void setCpu(Cpu cpu) {
         this.cpu = cpu;
         renderingCanvas.setDisplay(cpu.getDisplay());
@@ -69,16 +64,10 @@ public class MainScreen extends JFrame implements EmulatorController, Preference
     }
 
     @Override
-    public JFrame getMainWindow() {
-        return this;
-    }
-
-    @Override
     public void start() {
         cpuCycleTimer.start();
         resumeAction.setEnabled(false);
         pauseAction.setEnabled(true);
-
     }
 
     @Override
@@ -86,13 +75,6 @@ public class MainScreen extends JFrame implements EmulatorController, Preference
         cpuCycleTimer.stop();
         resumeAction.setEnabled(true);
         pauseAction.setEnabled(false);
-    }
-
-    @Override
-    public void romOpened() {
-        resumeAction.setEnabled(false);
-        pauseAction.setEnabled(true);
-        resetAction.setEnabled(true);
     }
 
     @Override
@@ -112,7 +94,29 @@ public class MainScreen extends JFrame implements EmulatorController, Preference
         cpuCycleTimer.start();
     }
 
-    private void initUI() {
+    @Override
+    public void romChanged() {
+        resumeAction.setEnabled(false);
+        pauseAction.setEnabled(true);
+        resetAction.setEnabled(true);
+
+        if (!cpuCycleTimer.isRunning()) {
+            start();
+        }
+    }
+
+    private void initActions() {
+        resumeAction = new StartAction("Resume", this);
+        resumeAction.setEnabled(false);
+
+        pauseAction = new StopAction("Pause", this);
+        pauseAction.setEnabled(false);
+
+        resetAction = new ResetAction(cpu);
+        resetAction.setEnabled(false);
+    }
+
+    private void buildUI() {
         createMenuBar();
         createRenderingCanvas();
 
@@ -134,29 +138,23 @@ public class MainScreen extends JFrame implements EmulatorController, Preference
 
     private void createFileMenu() {
         JMenu fileMenu = new JMenu("File");
-        fileMenu.add(new OpenRomAction(this));
+        fileMenu.add(new OpenRomAction(cpu, this));
         fileMenu.add(new ExitAction());
         menuBar.add(fileMenu);
     }
 
     private void createRunMenu() {
         JMenu menu = new JMenu("Run");
-        resumeAction = new ResumeAction(this);
-        resumeAction.setEnabled(false);
         menu.add(resumeAction);
-        pauseAction = new PauseAction(this);
-        pauseAction.setEnabled(false);
         menu.add(pauseAction);
-        resetAction = new ResetAction(this);
-        resetAction.setEnabled(false);
         menu.add(resetAction);
         menuBar.add(menu);
     }
 
     private void createMemoryMenu() {
         JMenu menu = new JMenu("Memory");
-        menu.add(new SaveStateAction(this));
-        menu.add(new LoadStateAction(this));
+        menu.add(new SaveStateAction(cpu, "state"));
+        menu.add(new LoadStateAction(this, "state"));
         menuBar.add(menu);
     }
 

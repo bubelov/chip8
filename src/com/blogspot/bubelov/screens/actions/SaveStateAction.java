@@ -1,6 +1,6 @@
 package com.blogspot.bubelov.screens.actions;
 
-import com.blogspot.bubelov.screens.EmulatorController;
+import com.blogspot.bubelov.core.Cpu;
 import com.blogspot.bubelov.utils.IOUtils;
 
 import javax.swing.*;
@@ -12,17 +12,19 @@ import java.io.*;
  * Date: 7/07/12 10:54 PM
  */
 public class SaveStateAction extends AbstractAction {
-    private EmulatorController controller;
+    private Cpu cpu;
+    private String fileName;
 
-    public SaveStateAction(EmulatorController controller) {
+    public SaveStateAction(Cpu cpu, String fileName) {
         super("Save State");
-        this.controller = controller;
+        this.cpu = cpu;
+        this.fileName = fileName;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            IOUtils.serializeObjectToFile(controller.getCpu(), new File("state"));
+            IOUtils.serializeObjectToFile(cpu, new File(fileName));
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

@@ -1,6 +1,6 @@
 package com.blogspot.bubelov.screens.actions;
 
-import com.blogspot.bubelov.screens.EmulatorController;
+import com.blogspot.bubelov.core.Cpu;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -10,17 +10,15 @@ import java.awt.event.ActionEvent;
  * Date: 7/07/12 11:00 PM
  */
 public class ResetAction extends AbstractAction {
-    private EmulatorController controller;
+    private Cpu cpu;
 
-    public ResetAction(EmulatorController controller) {
+    public ResetAction(Cpu cpu) {
         super("Reset");
-        this.controller = controller;
+        this.cpu = cpu;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        controller.stop();
-        controller.getCpu().reset();
-        controller.start();
+        cpu.reset();
     }
 }

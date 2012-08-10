@@ -24,6 +24,7 @@ public class Cpu implements Serializable {
     private Keyboard keyboard;
     private boolean[] display;
     private Rom currentRom;
+    private CpuListener listener;
 
     public Cpu() {
         ram = new int[RAM_SIZE_BYTES];
@@ -45,6 +46,10 @@ public class Cpu implements Serializable {
         return keyboard;
     }
 
+    public void setListener(CpuListener listener) {
+        this.listener = listener;
+    }
+
     public void clear() {
         Arrays.fill(ram, PROGRAM_START_ADDRESS, ram.length, 0);
         Arrays.fill(generalRegisters, 0);
@@ -64,6 +69,10 @@ public class Cpu implements Serializable {
 
         for (int i = 0; i < rom.getData().length; i++) {
             ram[rom.getStartAddress() + i] = rom.getData()[i];
+        }
+
+        if (listener != null) {
+            listener.romChanged();
         }
     }
 

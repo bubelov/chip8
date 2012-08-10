@@ -1,6 +1,6 @@
 package com.blogspot.bubelov.screens.actions;
 
-import com.blogspot.bubelov.screens.EmulatorController;
+import com.blogspot.bubelov.screens.ActivityController;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -9,11 +9,11 @@ import java.awt.event.ActionEvent;
  * Author: Igor Bubelov
  * Date: 8/8/12 8:05 PM
  */
-public class PauseAction extends AbstractAction {
-    private EmulatorController controller;
+public class StopAction extends AbstractAction {
+    private ActivityController controller;
 
-    public PauseAction(EmulatorController controller) {
-        super("Pause");
+    public StopAction(String name, ActivityController controller) {
+        super(name);
         this.controller = controller;
     }
 
