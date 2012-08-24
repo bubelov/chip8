@@ -20,7 +20,7 @@
         <mkdir dir="${build.dir}"/>
         <jar destfile="${build.dir}/ChipX.jar" basedir="${out.dir}">
             <manifest>
-                <attribute name="Main-Class" value="com.blogspot.bubelov.ChipXApplication"/>
+                <attribute name="Main-Class" value="com.blogspot.bubelov.chipx.ChipXApplication"/>
             </manifest>
 
             <fileset dir=".">
@@ -32,7 +32,7 @@
     <!--<target name="build-mac" depends="build">-->
         <!--<jarbundler dir="${build.dir}"-->
                     <!--name="ChipX"-->
-                    <!--mainclass="com.blogspot.bubelov.ChipXApplication"-->
+                    <!--mainclass="com.blogspot.bubelov.chipx.ChipXApplication"-->
                     <!--jar="${build.dir}/ChipX.jar"-->
                     <!--jvmversion="1.6+"-->
                 <!--/>-->
